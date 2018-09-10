@@ -70,14 +70,19 @@ public class PlayActivity extends AppCompatActivity {
                 if(!isWhite){
                     score++;
                     ((TextView)findViewById(R.id.score)).setText("Score : "+score);
-                    randomNum = rand.nextInt(9 - 0 + 1);
-                    if (randomNum == 0){
-
+                    if(score == 999){
+                        showWinDialog();
                     }
                     else {
-                        findViewById(R.id.down).setBackgroundColor(Color.WHITE);
-                        findViewById(R.id.up).setBackgroundColor(Color.WHITE);
-                        isWhite = true;
+                        randomNum = rand.nextInt(9 - 0 + 1);
+                        if (randomNum == 0){
+
+                        }
+                        else {
+                            findViewById(R.id.down).setBackgroundColor(Color.WHITE);
+                            findViewById(R.id.up).setBackgroundColor(Color.WHITE);
+                            isWhite = true;
+                        }
                     }
                 }
                 else {
@@ -141,6 +146,35 @@ public class PlayActivity extends AppCompatActivity {
                 score = 0;
                 scoreview.setText("Score : "+score);
                 alertDialog.dismiss();
+            }
+        });
+    }
+
+    private void showWinDialog(){
+        LayoutInflater layoutInflaterAndroid = PlayActivity.this.getLayoutInflater();
+        View view = layoutInflaterAndroid.inflate(R.layout.win_dialog, null);
+
+        final AlertDialog alertDialog;
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(PlayActivity.this);
+        alertDialogBuilder.setView(view);
+
+        alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+        ((TextView) view.findViewById(R.id.wingame_score)).setText(String.valueOf(score));
+        view.findViewById(R.id.btn_again).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                score = 0;
+                scoreview.setText("Score : "+score);
+                alertDialog.dismiss();
+            }
+        });
+
+        view.findViewById(R.id.btn_close).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+                finish();
             }
         });
     }

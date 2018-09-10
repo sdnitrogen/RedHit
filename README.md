@@ -6,4 +6,5 @@ A simple clicker game
 - [x] end game at 999
 - [x] start tutorial alertdialog
 - [x] game over alertdialog
+- [x] show highscore
 - [ ] restart / continue with ad

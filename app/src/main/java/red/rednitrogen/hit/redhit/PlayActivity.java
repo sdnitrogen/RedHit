@@ -103,6 +103,7 @@ public class PlayActivity extends AppCompatActivity {
         final AlertDialog alertDialog;
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(PlayActivity.this);
         alertDialogBuilder.setView(view);
+        alertDialogBuilder.setCancelable(false);
 
         alertDialogBuilder.setPositiveButton("START", new DialogInterface.OnClickListener() {
             @Override
@@ -111,6 +112,8 @@ public class PlayActivity extends AppCompatActivity {
             }
         });
         alertDialog = alertDialogBuilder.create();
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
 
         Rect displayRectangle = new Rect();
@@ -129,10 +132,14 @@ public class PlayActivity extends AppCompatActivity {
         final AlertDialog alertDialog;
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(PlayActivity.this);
         alertDialogBuilder.setView(view);
+        alertDialogBuilder.setCancelable(false);
 
         alertDialog = alertDialogBuilder.create();
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
         ((TextView) view.findViewById(R.id.endgame_score)).setText(String.valueOf(score));
+        ((TextView) view.findViewById(R.id.endgame_highscore)).setText("High Score : " + String.valueOf(shPrefs.getInt("high", 0)));
         view.findViewById(R.id.btn_continue).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,8 +164,11 @@ public class PlayActivity extends AppCompatActivity {
         final AlertDialog alertDialog;
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(PlayActivity.this);
         alertDialogBuilder.setView(view);
+        alertDialogBuilder.setCancelable(false);
 
         alertDialog = alertDialogBuilder.create();
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
         ((TextView) view.findViewById(R.id.wingame_score)).setText(String.valueOf(score));
         view.findViewById(R.id.btn_again).setOnClickListener(new View.OnClickListener() {

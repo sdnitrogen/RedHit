@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="GAME OVER"
+        android:textSize="30dp"
+        android:textColor="@color/colorPrimary"
+        android:fontFamily="@font/avenir_next_regular"
+        android:textStyle="bold"
+        android:padding="16dp"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/endgame_score"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="60dp"
+        android:text="00"
+        android:textColor="@color/colorAccent"
+        android:fontFamily="@font/avenir_next_regular"
+        android:textStyle="bold"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/endgame_highscore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="High Score : 99"
+        android:textColor="#000"
+        android:fontFamily="@font/avenir_next_regular"
+        android:textStyle="bold"
+        android:gravity="center"/>
+
+    <Button
+        android:id="@+id/btn_continue"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="Continue with Ad"
+        android:fontFamily="@font/avenir_next_regular"
+        android:textStyle="bold"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_border"
+        android:drawableLeft="@drawable/ic_play_circle_filled_black_24dp"/>
+
+    <Button
+        android:id="@+id/btn_restart"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="Restart"
+        android:fontFamily="@font/avenir_next_regular"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_border"
+        android:drawableLeft="@drawable/ic_refresh_black_24dp"
+        android:layout_marginBottom="16dp"/>
+</LinearLayout>

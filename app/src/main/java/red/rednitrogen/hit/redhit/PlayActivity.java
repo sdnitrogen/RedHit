@@ -1,15 +1,22 @@
 package red.rednitrogen.hit.redhit;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Rect;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.TextView;
 
 import java.security.SecureRandom;
 
 public class PlayActivity extends AppCompatActivity {
+
+    private TextView scoreview;
 
     private SharedPreferences shPrefs;
 
@@ -26,7 +33,11 @@ public class PlayActivity extends AppCompatActivity {
         shPrefs = getSharedPreferences("HighScore", MODE_PRIVATE);
         final SharedPreferences.Editor shEditor = shPrefs.edit();
 
-        ((TextView)findViewById(R.id.score)).setText("Score : "+score);
+        showStartDialog();
+
+        scoreview = findViewById(R.id.score);
+
+        scoreview.setText("Score : "+score);
 
         randomNum = rand.nextInt(9 - 0 + 1);
 
@@ -48,7 +59,7 @@ public class PlayActivity extends AppCompatActivity {
                         shEditor.putInt("high", score);
                         shEditor.commit();
                     }
-                    finish();
+                    showEndDialog();
                 }
             }
         });
@@ -74,8 +85,62 @@ public class PlayActivity extends AppCompatActivity {
                         shEditor.putInt("high", score);
                         shEditor.commit();
                     }
-                    finish();
+                    showEndDialog();
                 }
+            }
+        });
+    }
+
+    private void showStartDialog(){
+        LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getApplicationContext());
+        View view = layoutInflaterAndroid.inflate(R.layout.start_dialog, null);
+
+        final AlertDialog alertDialog;
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(PlayActivity.this);
+        alertDialogBuilder.setView(view);
+
+        alertDialogBuilder.setPositiveButton("START", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
+        Rect displayRectangle = new Rect();
+        Window window = getWindow();
+
+        window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
+
+        alertDialog.getWindow().setLayout((int)(displayRectangle.width() *
+                0.95f), (int)(displayRectangle.height() * 0.6f));
+    }
+
+    private void showEndDialog(){
+        LayoutInflater layoutInflaterAndroid = PlayActivity.this.getLayoutInflater();
+        View view = layoutInflaterAndroid.inflate(R.layout.end_dialog, null);
+
+        final AlertDialog alertDialog;
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(PlayActivity.this);
+        alertDialogBuilder.setView(view);
+
+        alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+        ((TextView) view.findViewById(R.id.endgame_score)).setText(String.valueOf(score));
+        view.findViewById(R.id.btn_continue).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+        view.findViewById(R.id.btn_restart).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                score = 0;
+                scoreview.setText("Score : "+score);
+                alertDialog.dismiss();
             }
         });
     }

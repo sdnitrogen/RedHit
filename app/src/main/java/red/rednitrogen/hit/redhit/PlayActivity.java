@@ -12,11 +12,20 @@ import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+
 import java.security.SecureRandom;
 
-public class PlayActivity extends AppCompatActivity {
+public class PlayActivity extends AppCompatActivity implements RewardedVideoAdListener {
 
     private TextView scoreview;
+    private RewardedVideoAd mAd;
+
+    private AlertDialog aDialog;
 
     private SharedPreferences shPrefs;
 
@@ -29,6 +38,11 @@ public class PlayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
+
+        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+        mAd = MobileAds.getRewardedVideoAdInstance(this);
+        mAd.setRewardedVideoAdListener(this);
+        mAd.loadAd("ca-app-pub-3940256099942544/5224354917", new AdRequest.Builder().build());
 
         shPrefs = getSharedPreferences("HighScore", MODE_PRIVATE);
         final SharedPreferences.Editor shEditor = shPrefs.edit();
@@ -129,21 +143,22 @@ public class PlayActivity extends AppCompatActivity {
         LayoutInflater layoutInflaterAndroid = PlayActivity.this.getLayoutInflater();
         View view = layoutInflaterAndroid.inflate(R.layout.end_dialog, null);
 
-        final AlertDialog alertDialog;
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(PlayActivity.this);
         alertDialogBuilder.setView(view);
         alertDialogBuilder.setCancelable(false);
 
-        alertDialog = alertDialogBuilder.create();
-        alertDialog.setCancelable(false);
-        alertDialog.setCanceledOnTouchOutside(false);
-        alertDialog.show();
+        aDialog = alertDialogBuilder.create();
+        aDialog.setCancelable(false);
+        aDialog.setCanceledOnTouchOutside(false);
+        aDialog.show();
         ((TextView) view.findViewById(R.id.endgame_score)).setText(String.valueOf(score));
         ((TextView) view.findViewById(R.id.endgame_highscore)).setText("High Score : " + String.valueOf(shPrefs.getInt("high", 0)));
         view.findViewById(R.id.btn_continue).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                alertDialog.dismiss();
+                if(mAd.isLoaded()){
+                    mAd.show();
+                }
             }
         });
 
@@ -152,7 +167,7 @@ public class PlayActivity extends AppCompatActivity {
             public void onClick(View v) {
                 score = 0;
                 scoreview.setText("Score : "+score);
-                alertDialog.dismiss();
+                aDialog.dismiss();
             }
         });
     }
@@ -187,5 +202,51 @@ public class PlayActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    public void onRewardedVideoAdLoaded() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdOpened() {
+
+    }
+
+    @Override
+    public void onRewardedVideoStarted() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdClosed() {
+
+    }
+
+    @Override
+    public void onRewarded(RewardItem rewardItem) {
+        aDialog.dismiss();
+    }
+
+    @Override
+    public void onRewardedVideoAdLeftApplication() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdFailedToLoad(int i) {
+
+    }
+
+    @Override
+    public void onRewardedVideoCompleted() {
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mAd.loadAd("ca-app-pub-3940256099942544/5224354917", new AdRequest.Builder().build());
     }
 }

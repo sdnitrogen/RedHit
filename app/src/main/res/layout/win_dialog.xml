@@ -28,7 +28,7 @@
 
     <Button
         android:id="@+id/btn_again"
-        android:layout_width="300dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:text="Play AGAIn"
         android:fontFamily="@font/avenir_next_regular"
@@ -42,7 +42,7 @@
 
     <Button
         android:id="@+id/btn_close"
-        android:layout_width="300dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:text="Close"
         android:fontFamily="@font/avenir_next_regular"

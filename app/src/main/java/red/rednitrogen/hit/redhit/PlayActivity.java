@@ -4,6 +4,8 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,18 +14,37 @@ import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.reward.RewardItem;
-import com.google.android.gms.ads.reward.RewardedVideoAd;
-import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+import com.google.android.gms.ads.InterstitialAd;
 
 import java.security.SecureRandom;
 
-public class PlayActivity extends AppCompatActivity implements RewardedVideoAdListener {
+import io.netopen.hotbitmapgg.library.view.RingProgressBar;
+
+public class PlayActivity extends AppCompatActivity {
+
+    RingProgressBar ctdwn_progressbar;
+    private boolean startThread = false;
+    int progress = 0;
+    Thread t;
+
+    Handler myHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            if(startThread){
+                if(msg.what == 0){
+                    if(progress < 100){
+                        progress++;
+                        ctdwn_progressbar.setProgress(progress);
+                    }
+                }
+            }
+        }
+    };
 
     private TextView scoreview;
-    private RewardedVideoAd mAd;
+    private InterstitialAd mAd;
 
     private AlertDialog aDialog;
 
@@ -39,17 +60,20 @@ public class PlayActivity extends AppCompatActivity implements RewardedVideoAdLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
-        MobileAds.initialize(this, getString(R.string.admob_app_id));
-        mAd = MobileAds.getRewardedVideoAdInstance(this);
-        mAd.setRewardedVideoAdListener(this);
-        mAd.loadAd(getString(R.string.reward_ad_unit_id), new AdRequest.Builder().build());
-
         shPrefs = getSharedPreferences("HighScore", MODE_PRIVATE);
         final SharedPreferences.Editor shEditor = shPrefs.edit();
 
         showStartDialog();
 
         scoreview = findViewById(R.id.score);
+        ctdwn_progressbar = findViewById(R.id.progress_bar_ctdwn);
+        ctdwn_progressbar.setOnProgressListener(new RingProgressBar.OnProgressListener() {
+            @Override
+            public void progressToComplete() {
+                startThread = false;
+                showEndDialog();
+            }
+        });
 
         scoreview.setText("Score : "+score);
 
@@ -63,12 +87,23 @@ public class PlayActivity extends AppCompatActivity implements RewardedVideoAdLi
                         findViewById(R.id.down).setBackgroundColor(getResources().getColor(R.color.colorAccent));
                         findViewById(R.id.up).setBackgroundColor(getResources().getColor(R.color.colorAccent));
                         isWhite = false;
+
+                        ctdwn_progressbar.setRingColor(Color.WHITE);
+                        ctdwn_progressbar.setRingProgressColor(Color.WHITE);
+                        ctdwn_progressbar.setTextColor(Color.WHITE);
+
+                        progress = 0;
+                        startThread = true;
                     }
                     else {
                         randomNum--;
+
+                        progress = 0;
+                        startThread = true;
                     }
                 }
                 else {
+                    startThread = false;
                     if(score > shPrefs.getInt("high", 0)){
                         shEditor.putInt("high", score);
                         shEditor.commit();
@@ -90,16 +125,25 @@ public class PlayActivity extends AppCompatActivity implements RewardedVideoAdLi
                     else {
                         randomNum = rand.nextInt(9 - 0 + 1);
                         if (randomNum == 0){
-
+                            progress = 0;
+                            startThread = true;
                         }
                         else {
                             findViewById(R.id.down).setBackgroundColor(Color.WHITE);
                             findViewById(R.id.up).setBackgroundColor(Color.WHITE);
                             isWhite = true;
+
+                            ctdwn_progressbar.setRingColor(getResources().getColor(R.color.colorAccent));
+                            ctdwn_progressbar.setRingProgressColor(getResources().getColor(R.color.colorAccent));
+                            ctdwn_progressbar.setTextColor(getResources().getColor(R.color.colorAccent));
+
+                            progress = 0;
+                            startThread = true;
                         }
                     }
                 }
                 else {
+                    startThread = false;
                     if(score > shPrefs.getInt("high", 0)){
                         shEditor.putInt("high", score);
                         shEditor.commit();
@@ -123,6 +167,22 @@ public class PlayActivity extends AppCompatActivity implements RewardedVideoAdLi
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
+                progress = 0;
+                startThread = true;
+                t = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        while(true){
+                            try {
+                                Thread.sleep(50);
+                                myHandler.sendEmptyMessage(0);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
+                t.start();
             }
         });
         alertDialog = alertDialogBuilder.create();
@@ -156,9 +216,7 @@ public class PlayActivity extends AppCompatActivity implements RewardedVideoAdLi
         view.findViewById(R.id.btn_continue).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mAd.isLoaded()){
-                    mAd.show();
-                }
+                loadInterstitialAd();
             }
         });
 
@@ -168,6 +226,9 @@ public class PlayActivity extends AppCompatActivity implements RewardedVideoAdLi
                 score = 0;
                 scoreview.setText("Score : "+score);
                 aDialog.dismiss();
+
+                progress = 0;
+                startThread = true;
             }
         });
     }
@@ -192,6 +253,9 @@ public class PlayActivity extends AppCompatActivity implements RewardedVideoAdLi
                 score = 0;
                 scoreview.setText("Score : "+score);
                 alertDialog.dismiss();
+
+                progress = 0;
+                startThread = true;
             }
         });
 
@@ -204,49 +268,46 @@ public class PlayActivity extends AppCompatActivity implements RewardedVideoAdLi
         });
     }
 
-    @Override
-    public void onRewardedVideoAdLoaded() {
+    private void loadInterstitialAd() {
+        mAd = new InterstitialAd(this);
+        mAd.setAdUnitId(getString(R.string.reward_ad_unit_id));
+        mAd.setAdListener(new AdListener() {
 
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                if(mAd.isLoaded()) {
+                    mAd.show();
+                }
+            }
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+                aDialog.dismiss();
+                progress = 0;
+                startThread = true;
+            }
+
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+                aDialog.dismiss();
+                progress = 0;
+                startThread = true;
+            }
+        });
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAd.loadAd(adRequest);
     }
 
     @Override
-    public void onRewardedVideoAdOpened() {
-
-    }
-
-    @Override
-    public void onRewardedVideoStarted() {
-
-    }
-
-    @Override
-    public void onRewardedVideoAdClosed() {
-
-    }
-
-    @Override
-    public void onRewarded(RewardItem rewardItem) {
-        aDialog.dismiss();
-    }
-
-    @Override
-    public void onRewardedVideoAdLeftApplication() {
-
-    }
-
-    @Override
-    public void onRewardedVideoAdFailedToLoad(int i) {
-
-    }
-
-    @Override
-    public void onRewardedVideoCompleted() {
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mAd.loadAd(getString(R.string.reward_ad_unit_id), new AdRequest.Builder().build());
+    protected void onDestroy() {
+        if(t != null){
+            t.interrupt();
+            return;
+        }
+        super.onDestroy();
     }
 }

@@ -37,4 +37,19 @@
         android:fontFamily="@font/avenir_next_regular"
         android:layout_gravity="top|end"/>
 
+    <io.netopen.hotbitmapgg.library.view.RingProgressBar
+        android:id="@+id/progress_bar_ctdwn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        app:max="100"
+        app:ringColor="@color/colorAccent"
+        app:ringProgressColor="@color/colorAccent"
+        app:ringWidth="4dp"
+        app:style="FILL"
+        app:textColor="@color/colorAccent"
+        app:textIsShow="false"
+        app:textSize="16sp" />
+
+
 </FrameLayout>

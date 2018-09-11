@@ -39,9 +39,9 @@
 
     <Button
         android:id="@+id/btn_continue"
-        android:layout_width="300dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:text="Continue with Ad"
+        android:text="Resume with Ad"
         android:fontFamily="@font/avenir_next_regular"
         android:textStyle="bold"
         android:paddingLeft="40dp"
@@ -53,7 +53,7 @@
 
     <Button
         android:id="@+id/btn_restart"
-        android:layout_width="300dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:text="Restart"
         android:fontFamily="@font/avenir_next_regular"

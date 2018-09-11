@@ -309,5 +309,6 @@ public class PlayActivity extends AppCompatActivity {
             return;
         }
         super.onDestroy();
+        myHandler.removeCallbacksAndMessages(null);
     }
 }

@@ -39,8 +39,8 @@
 
     <io.netopen.hotbitmapgg.library.view.RingProgressBar
         android:id="@+id/progress_bar_ctdwn"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_gravity="center"
         app:max="100"
         app:ringColor="@color/colorAccent"
@@ -54,8 +54,8 @@
     <LinearLayout
         android:id="@+id/center"
         android:orientation="horizontal"
-        android:layout_width="10dp"
-        android:layout_height="10dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:background="@drawable/circle"
         android:layout_gravity="center"/>
 

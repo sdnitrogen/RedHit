@@ -20,7 +20,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="Tap the upper half of the screen when the screen is RED"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
+            android:padding="5dp"
             android:textSize="20dp"
             android:textColor="#000"
             android:gravity="center_vertical"
@@ -45,12 +46,22 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="Tap the bottom half of the screen when the screen is WHITE"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
+            android:padding="5dp"
             android:textSize="20dp"
             android:textColor="#000"
             android:gravity="center_vertical"
             android:fontFamily="@font/avenir_next_regular"/>
 
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:text="*Be fast before time runs out"
+        android:gravity="center"
+        android:textColor="@color/colorAccent"
+        android:fontFamily="@font/avenir_next_regular"/>
 
 </LinearLayout>

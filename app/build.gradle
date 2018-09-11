@@ -21,7 +21,7 @@ android {
             applicationVariants.all { variant ->
                 variant.outputs.all {
                     def appName = "rednitrogen.hit"
-                    outputFileName = appName + "-${variant.versionName}-${variant.flavorName}.apk"
+                    outputFileName = appName + "-${variant.versionName}.apk"
                 }
             }
         }

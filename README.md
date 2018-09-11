@@ -8,3 +8,4 @@ A simple clicker game
 - [x] game over alertdialog
 - [x] show highscore
 - [x] restart / continue with ad
+- [ ] progressbar countdown

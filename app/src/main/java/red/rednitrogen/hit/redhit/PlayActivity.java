@@ -39,10 +39,10 @@ public class PlayActivity extends AppCompatActivity implements RewardedVideoAdLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
-        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
+        MobileAds.initialize(this, getString(R.string.admob_app_id));
         mAd = MobileAds.getRewardedVideoAdInstance(this);
         mAd.setRewardedVideoAdListener(this);
-        mAd.loadAd("ca-app-pub-3940256099942544/5224354917", new AdRequest.Builder().build());
+        mAd.loadAd(getString(R.string.reward_ad_unit_id), new AdRequest.Builder().build());
 
         shPrefs = getSharedPreferences("HighScore", MODE_PRIVATE);
         final SharedPreferences.Editor shEditor = shPrefs.edit();
@@ -247,6 +247,6 @@ public class PlayActivity extends AppCompatActivity implements RewardedVideoAdLi
     @Override
     public void onResume() {
         super.onResume();
-        mAd.loadAd("ca-app-pub-3940256099942544/5224354917", new AdRequest.Builder().build());
+        mAd.loadAd(getString(R.string.reward_ad_unit_id), new AdRequest.Builder().build());
     }
 }

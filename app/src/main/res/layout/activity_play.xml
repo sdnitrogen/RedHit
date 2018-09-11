@@ -49,7 +49,15 @@
         app:style="FILL"
         app:textColor="@color/colorAccent"
         app:textIsShow="false"
-        app:textSize="16sp" />
+        app:textSize="0sp" />
+
+    <LinearLayout
+        android:id="@+id/center"
+        android:orientation="horizontal"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:background="@drawable/circle"
+        android:layout_gravity="center"/>
 
 
 </FrameLayout>

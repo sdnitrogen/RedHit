@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
@@ -71,6 +72,10 @@ public class PlayActivity extends AppCompatActivity {
             @Override
             public void progressToComplete() {
                 startThread = false;
+                if(score > shPrefs.getInt("high", 0)){
+                    shEditor.putInt("high", score);
+                    shEditor.commit();
+                }
                 showEndDialog();
             }
         });
@@ -91,6 +96,7 @@ public class PlayActivity extends AppCompatActivity {
                         ctdwn_progressbar.setRingColor(Color.WHITE);
                         ctdwn_progressbar.setRingProgressColor(Color.WHITE);
                         ctdwn_progressbar.setTextColor(Color.WHITE);
+                        ((GradientDrawable)findViewById(R.id.center).getBackground()).setColor(Color.WHITE);
 
                         progress = 0;
                         startThread = true;
@@ -136,6 +142,7 @@ public class PlayActivity extends AppCompatActivity {
                             ctdwn_progressbar.setRingColor(getResources().getColor(R.color.colorAccent));
                             ctdwn_progressbar.setRingProgressColor(getResources().getColor(R.color.colorAccent));
                             ctdwn_progressbar.setTextColor(getResources().getColor(R.color.colorAccent));
+                            ((GradientDrawable)findViewById(R.id.center).getBackground()).setColor(getResources().getColor(R.color.colorAccent));
 
                             progress = 0;
                             startThread = true;
@@ -174,7 +181,7 @@ public class PlayActivity extends AppCompatActivity {
                     public void run() {
                         while(true){
                             try {
-                                Thread.sleep(50);
+                                Thread.sleep(30);
                                 myHandler.sendEmptyMessage(0);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();

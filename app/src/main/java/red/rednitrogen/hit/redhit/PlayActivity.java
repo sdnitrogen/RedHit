@@ -90,6 +90,8 @@ public class PlayActivity extends AppCompatActivity implements RewardedVideoAdLi
             @Override
             public void progressToComplete() {
                 startThread = false;
+                findViewById(R.id.down).setClickable(false);
+                findViewById(R.id.up).setClickable(false);
                 if(score > shPrefs.getInt("high", 0)){
                     shEditor.putInt("high", score);
                     shEditor.commit();

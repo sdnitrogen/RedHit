@@ -38,4 +38,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.google.android.gms:play-services-ads:15.0.1'
     implementation 'com.github.HotBitmapGG:RingProgressBar:V1.2.3'
+    implementation 'com.jraska:falcon:2.1.0'
 }

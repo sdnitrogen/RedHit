@@ -1,10 +1,15 @@
 package red.rednitrogen.hit.redhit;
 
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
@@ -18,8 +23,15 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
+import com.jraska.falcon.Falcon;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.security.SecureRandom;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import io.netopen.hotbitmapgg.library.view.RingProgressBar;
 
@@ -48,6 +60,7 @@ public class PlayActivity extends AppCompatActivity {
     private InterstitialAd mAd;
 
     private AlertDialog aDialog;
+    private String imagePath;
 
     private SharedPreferences shPrefs;
 
@@ -181,7 +194,7 @@ public class PlayActivity extends AppCompatActivity {
                     public void run() {
                         while(true){
                             try {
-                                Thread.sleep(30);
+                                Thread.sleep(10);
                                 myHandler.sendEmptyMessage(0);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
@@ -238,6 +251,33 @@ public class PlayActivity extends AppCompatActivity {
                 startThread = true;
             }
         });
+
+        view.findViewById(R.id.btn_rate).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID);
+                Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+                // To count with Play market backstack, After pressing back button,
+                // to taken back to our application, we need to add following flags to intent.
+                goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                try {
+                    startActivity(goToMarket);
+                } catch (ActivityNotFoundException e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)));
+                }
+            }
+        });
+
+        view.findViewById(R.id.btn_share).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                takeScreenshot();
+                shareIt();
+            }
+        });
     }
 
     private void showWinDialog(){
@@ -271,6 +311,33 @@ public class PlayActivity extends AppCompatActivity {
             public void onClick(View v) {
                 alertDialog.dismiss();
                 finish();
+            }
+        });
+
+        view.findViewById(R.id.btn_rate).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID);
+                Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+                // To count with Play market backstack, After pressing back button,
+                // to taken back to our application, we need to add following flags to intent.
+                goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                        Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                        Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                try {
+                    startActivity(goToMarket);
+                } catch (ActivityNotFoundException e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)));
+                }
+            }
+        });
+
+        view.findViewById(R.id.btn_share).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                takeScreenshot();
+                shareIt();
             }
         });
     }
@@ -317,5 +384,25 @@ public class PlayActivity extends AppCompatActivity {
         }
         super.onDestroy();
         myHandler.removeCallbacksAndMessages(null);
+    }
+
+    public void takeScreenshot() {
+        File imageDir = new File(Environment.getExternalStorageDirectory().toString() + "/Redit/");
+        if (!imageDir.exists()) {
+            imageDir.mkdirs();
+        }
+        imagePath = Environment.getExternalStorageDirectory().toString() + "/Redit/Screenshot_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()) + ".png";
+        File image = new File(imagePath);
+        Falcon.takeScreenshot(PlayActivity.this, image);
+    }
+
+    private void shareIt() {
+        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+        sharingIntent.setType("image/*");
+        String shareBody = "Can you beat me in Red it?\nGet it from https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID;
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(imagePath));
+
+        startActivity(Intent.createChooser(sharingIntent, "Share via"));
     }
 }

@@ -4,7 +4,6 @@ import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
@@ -23,19 +22,20 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.jraska.falcon.Falcon;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import io.netopen.hotbitmapgg.library.view.RingProgressBar;
 
-public class PlayActivity extends AppCompatActivity {
+public class PlayActivity extends AppCompatActivity implements RewardedVideoAdListener {
 
     RingProgressBar ctdwn_progressbar;
     private boolean startThread = false;
@@ -58,6 +58,7 @@ public class PlayActivity extends AppCompatActivity {
 
     private TextView scoreview;
     private InterstitialAd mAd;
+    private RewardedVideoAd vAd;
 
     private AlertDialog aDialog;
     private String imagePath;
@@ -76,6 +77,10 @@ public class PlayActivity extends AppCompatActivity {
 
         shPrefs = getSharedPreferences("HighScore", MODE_PRIVATE);
         final SharedPreferences.Editor shEditor = shPrefs.edit();
+
+        vAd = MobileAds.getRewardedVideoAdInstance(this);
+        vAd.setRewardedVideoAdListener(this);
+        vAd.loadAd(getString(R.string.reward_ad_unit_id), new AdRequest.Builder().build());
 
         showStartDialog();
 
@@ -236,7 +241,12 @@ public class PlayActivity extends AppCompatActivity {
         view.findViewById(R.id.btn_continue).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadInterstitialAd();
+                if(vAd.isLoaded()){
+                    vAd.show();
+                }
+                else{
+                    loadInterstitialAd();
+                }
             }
         });
 
@@ -344,7 +354,7 @@ public class PlayActivity extends AppCompatActivity {
 
     private void loadInterstitialAd() {
         mAd = new InterstitialAd(this);
-        mAd.setAdUnitId(getString(R.string.reward_ad_unit_id));
+        mAd.setAdUnitId(getString(R.string.interstitial_ad_unit_id));
         mAd.setAdListener(new AdListener() {
 
             @Override
@@ -404,5 +414,53 @@ public class PlayActivity extends AppCompatActivity {
         sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(imagePath));
 
         startActivity(Intent.createChooser(sharingIntent, "Share via"));
+    }
+
+    @Override
+    public void onRewardedVideoAdLoaded() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdOpened() {
+
+    }
+
+    @Override
+    public void onRewardedVideoStarted() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdClosed() {
+
+    }
+
+    @Override
+    public void onRewarded(RewardItem rewardItem) {
+        aDialog.dismiss();
+        progress = 0;
+        startThread = true;
+    }
+
+    @Override
+    public void onRewardedVideoAdLeftApplication() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdFailedToLoad(int i) {
+
+    }
+
+    @Override
+    public void onRewardedVideoCompleted() {
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        vAd.loadAd(getString(R.string.reward_ad_unit_id), new AdRequest.Builder().build());
     }
 }

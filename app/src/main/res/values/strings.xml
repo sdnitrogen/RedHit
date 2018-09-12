@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Red it</string>
+    <string name="app_name">red it</string>
 
     <!-- AdMob ad unit IDs -->
     <string name="admob_app_id">ca-app-pub-2083434115971367~4297056942</string>

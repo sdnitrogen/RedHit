@@ -128,6 +128,8 @@ public class PlayActivity extends AppCompatActivity implements RewardedVideoAdLi
                 }
                 else {
                     startThread = false;
+                    findViewById(R.id.down).setClickable(false);
+                    findViewById(R.id.up).setClickable(false);
                     if(score > shPrefs.getInt("high", 0)){
                         shEditor.putInt("high", score);
                         shEditor.commit();
@@ -144,6 +146,9 @@ public class PlayActivity extends AppCompatActivity implements RewardedVideoAdLi
                     score++;
                     ((TextView)findViewById(R.id.score)).setText("Score : "+score);
                     if(score == 999){
+                        startThread = false;
+                        findViewById(R.id.down).setClickable(false);
+                        findViewById(R.id.up).setClickable(false);
                         showWinDialog();
                     }
                     else {
@@ -169,6 +174,8 @@ public class PlayActivity extends AppCompatActivity implements RewardedVideoAdLi
                 }
                 else {
                     startThread = false;
+                    findViewById(R.id.down).setClickable(false);
+                    findViewById(R.id.up).setClickable(false);
                     if(score > shPrefs.getInt("high", 0)){
                         shEditor.putInt("high", score);
                         shEditor.commit();
@@ -255,6 +262,8 @@ public class PlayActivity extends AppCompatActivity implements RewardedVideoAdLi
             public void onClick(View v) {
                 score = 0;
                 scoreview.setText("Score : "+score);
+                findViewById(R.id.down).setClickable(true);
+                findViewById(R.id.up).setClickable(true);
                 aDialog.dismiss();
 
                 progress = 0;
@@ -309,6 +318,8 @@ public class PlayActivity extends AppCompatActivity implements RewardedVideoAdLi
             public void onClick(View v) {
                 score = 0;
                 scoreview.setText("Score : "+score);
+                findViewById(R.id.down).setClickable(true);
+                findViewById(R.id.up).setClickable(true);
                 alertDialog.dismiss();
 
                 progress = 0;
@@ -368,6 +379,8 @@ public class PlayActivity extends AppCompatActivity implements RewardedVideoAdLi
             @Override
             public void onAdFailedToLoad(int i) {
                 super.onAdFailedToLoad(i);
+                findViewById(R.id.down).setClickable(true);
+                findViewById(R.id.up).setClickable(true);
                 aDialog.dismiss();
                 progress = 0;
                 startThread = true;
@@ -376,6 +389,8 @@ public class PlayActivity extends AppCompatActivity implements RewardedVideoAdLi
             @Override
             public void onAdClosed() {
                 super.onAdClosed();
+                findViewById(R.id.down).setClickable(true);
+                findViewById(R.id.up).setClickable(true);
                 aDialog.dismiss();
                 progress = 0;
                 startThread = true;
@@ -433,11 +448,17 @@ public class PlayActivity extends AppCompatActivity implements RewardedVideoAdLi
 
     @Override
     public void onRewardedVideoAdClosed() {
-
+        findViewById(R.id.down).setClickable(true);
+        findViewById(R.id.up).setClickable(true);
+        aDialog.dismiss();
+        progress = 0;
+        startThread = true;
     }
 
     @Override
     public void onRewarded(RewardItem rewardItem) {
+        findViewById(R.id.down).setClickable(true);
+        findViewById(R.id.up).setClickable(true);
         aDialog.dismiss();
         progress = 0;
         startThread = true;

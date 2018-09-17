@@ -426,7 +426,7 @@ public class PlayActivity extends AppCompatActivity implements RewardedVideoAdLi
     private void shareIt() {
         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
         sharingIntent.setType("image/*");
-        String shareBody = "Can you beat me in Red it?\nGet it from https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID;
+        String shareBody = "Can you beat me in Red up?\nGet it from https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID;
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
         sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(imagePath));
 

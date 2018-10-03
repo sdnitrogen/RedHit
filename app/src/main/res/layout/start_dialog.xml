@@ -71,6 +71,8 @@
         android:layout_height="wrap_content"
         android:textSize="10dp"
         android:text="@string/privacy_policy"
+        android:clickable="true"
+        android:autoLink="all"
         android:gravity="center"
         android:textColor="@color/colorAccent"
         android:fontFamily="@font/avenir_next_regular"/>

@@ -226,7 +226,13 @@ public class PlayActivity extends AppCompatActivity implements RewardedVideoAdLi
         alertDialog.show();
 
         TextView tp = view.findViewById(R.id.privacy_policy_text);
-        tp.setMovementMethod(LinkMovementMethod.getInstance());
+        tp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("https://github.com/AssassiNCrizR/RedHit/blob/master/privacy_policy.md")));
+            }
+        });
 
         Rect displayRectangle = new Rect();
         Window window = getWindow();

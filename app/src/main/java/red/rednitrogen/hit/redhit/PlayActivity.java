@@ -14,6 +14,7 @@ import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -224,13 +225,16 @@ public class PlayActivity extends AppCompatActivity implements RewardedVideoAdLi
         alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
 
+        TextView tp = view.findViewById(R.id.privacy_policy_text);
+        tp.setMovementMethod(LinkMovementMethod.getInstance());
+
         Rect displayRectangle = new Rect();
         Window window = getWindow();
 
         window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
 
         alertDialog.getWindow().setLayout((int)(displayRectangle.width() *
-                0.95f), (int)(displayRectangle.height() * 0.6f));
+                0.95f), (int)(displayRectangle.height() * 0.7f));
     }
 
     private void showEndDialog(){

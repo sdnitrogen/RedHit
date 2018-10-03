@@ -64,4 +64,15 @@
         android:textColor="@color/colorAccent"
         android:fontFamily="@font/avenir_next_regular"/>
 
+    <TextView
+        android:id="@+id/privacy_policy_text"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="10dp"
+        android:text="@string/privacy_policy"
+        android:gravity="center"
+        android:textColor="@color/colorAccent"
+        android:fontFamily="@font/avenir_next_regular"/>
+
 </LinearLayout>

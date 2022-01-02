@@ -31,7 +31,7 @@ A simple & fast clicker game to chase high score.
 [![Libraries](https://img.shields.io/badge/com.jraska:falcon:%202.1.0-green.svg)](https://github.com/jraska/Falcon)<br>
 
 ## Support Development
-Support development by making donation through Paypal 
+Support development by making donation through Paypal <br>
 [![Donate](https://img.shields.io/badge/donate-paypal-blue.svg)](https://www.paypal.me/sdnitrogen)<br>
 
 ## License

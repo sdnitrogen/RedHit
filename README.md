@@ -30,9 +30,10 @@ A simple & fast clicker game to chase high score.
 [![Libraries](https://img.shields.io/badge/com.github.HotBitmapGG:RingProgressBar:%20V1.2.3-green.svg)](https://github.com/HotBitmapGG/RingProgressBar)<br>
 [![Libraries](https://img.shields.io/badge/com.jraska:falcon:%202.1.0-green.svg)](https://github.com/jraska/Falcon)<br>
 
-## Support Development
-Support development by making donation through Paypal <br>
-[![Donate](https://img.shields.io/badge/donate-paypal-blue.svg)](https://www.paypal.me/sdnitrogen)<br>
+### Support Development
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/sdnitrogen) <br> 
+[![Donate](https://img.shields.io/badge/Donate-Paypal-blue?style=for-the-badge)](https://www.paypal.me/sdnitrogen)
 
 ## License
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)<br>
